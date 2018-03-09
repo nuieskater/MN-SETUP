@@ -2,8 +2,8 @@
 clear
 
 STRING1="Make sure you double check before hitting enter! Only one shot at these!"
-STRING2="If you found this helpful, please donate to NORT Donation: "
-STRING3="nKHHz5J1xQ1RdKbYau5heo2v2ziqxn1chy"
+STRING2="If you found this helpful, please donate to ARCH: "
+STRING3="4pDdpzCNngbMp8a1xyernhS9oAEAuhN2dU"
 STRING4="Updating system and installing required packages."
 STRING5="Switching to Aptitude"
 STRING6="Some optional installs"
@@ -62,12 +62,13 @@ if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
 fi
 
 #Install Northern Daemon
-wget https://github.com/Northerncryptodev/Northern/releases/download/v2.0.1/northern-2.0.1.x86_64-linux-gnu-daemon-nogui.tar.gz
-sudo tar -xzvf northern-2.0.1.x86_64-linux-gnu-daemon-nogui.tar.gz
-sudo rm northern-2.0.1.x86_64-linux-gnu-daemon-nogui.tar.gz
-sudo cp ~/northern-2.0.1/northernd /usr/bin
-sudo cp ~/northern-2.0.1/northern-cli /usr/bin
-northernd -daemon
+wget https://github.com/ArchimedDev/ArchimedCoin/releases/download/v.1.1.0.2/arhimed-gui-ubuntu.16.04.tar.gz
+sudo tar -xzvf arhimed-gui-ubuntu.16.04.tar.gz
+sudo rm arhimed-gui-ubuntu.16.04.tar.gz
+sudo cp ~usr/local/bin/archimedd /usr/bin
+sudo cp ~/usr/local/bin/archimed-tx /usr/bin
+sudo cp ~/usr/local/bin/archimed-cli /usr/bin
+archimedd -daemon
 clear
 
 #Setting up coin
@@ -90,23 +91,23 @@ daemon=1
 logtimestamps=1
 maxconnections=256
 externalip='$ip'
-bind='$ip':60151
+bind='$ip':10211
 masternodeaddr='$ip'
 masternodeprivkey='$key'
 masternode=1
-' | sudo -E tee ~/.northern/northern.conf >/dev/null 2>&1
-sudo chmod 0600 ~/.northern/northern.conf
+' | sudo -E tee ~/.archimedcore/archimed.conf >/dev/null 2>&1
+sudo chmod 0600 ~/.archimedcore/archimed.conf
 
 #Starting coin
 (
   crontab -l 2>/dev/null
-  echo '@reboot sleep 30 && northernd -daemon -shrinkdebugfile'
+  echo '@reboot sleep 30 && archimedd -daemon -shrinkdebugfile'
 ) | crontab
 (
   crontab -l 2>/dev/null
-  echo '@reboot sleep 60 && northern-cli startmasternode local false'
+  echo '@reboot sleep 60 && archimed-cli startmasternode local false'
 ) | crontab
-northernd -daemon
+archimedd -daemon
 
 clear
 echo $STRING2
@@ -130,5 +131,5 @@ echo $STRING14
 sleep 5m
 
 read -p "Press any key to continue... " -n1 -s
-northern-cli startmasternode local false
-northern-cli masternode status
+archimed-cli startmasternode local false
+archimed-cli masternode status
